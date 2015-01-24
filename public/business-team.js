@@ -33,7 +33,7 @@ function progressBar(startingPercent) {
    }
 
    this.setPercent = function(newPercent) {
-      $("#thebaritself").width(newPercent);
+      $("#thebaritself").width(newPercent + "%");
       this.percent = newPercent;
    }
 
