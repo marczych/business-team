@@ -7,3 +7,7 @@ $( document ).ready(function() {
 function newPanel(name, action, size) {
 	$('#topRow').append("<div class='col-md-" + size + "'>" + name + "<br /><button type='button' class='btn btn-default btn-primary'>" + action + "</button></div>");
 }
+
+function wipeRow() {
+	$('#topRow').empty();
+}
