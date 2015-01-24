@@ -76,11 +76,11 @@ function Panel(control, inputType, divWidth, action1, action2, action3) {
 	this.makePanel = function() {
 		switch (this.inputType) {
 			case "button":
-				$('#topRow').append("<div class='col-md-" + divWidth + "'>" + control + "<br /><button type='button' class='btn btn-default btn-primary'>" + action1 + "</button></div>");
+				$('#topRow').append("<div class='col-md-" + divWidth + "'><h3>" + control + "</h3><button type='button' class='btn btn-lg btn-block btn-primary'>" + action1 + "</button></div>");
 				break;
 
 			case "switch":
-				$('#topRow').append("<div class='col-md-" + divWidth + "'>" + control + "<br /><div class='btn-group' data-toggle='buttons'><label class='btn btn-primary'><input type='radio' name='control' id='option1' autocomplete='off' checked>" + action1 + "</label><label class='btn btn-primary'><input type='radio' name='options' id='option2' autocomplete='off'>" + action2 + "</label></div></div>");
+				$('#topRow').append("<div class='col-md-" + divWidth + "'><h3>" + control + "</h3><div class='btn-group' data-toggle='buttons'><label class='btn btn-lg btn-block btn-primary'><input type='radio' name='control' id='option1' autocomplete='off' checked>" + action1 + "</label><label class='btn btn-lg btn-block btn-primary'><input type='radio' name='options' id='option2' autocomplete='off'>" + action2 + "</label></div></div>");
 				break;
 		}
 	}

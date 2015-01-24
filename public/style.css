@@ -71,21 +71,25 @@ ul {
 .col-md-1 {
    border: 1px solid black;
    height:200px;
+   text-align: center;
 }
 
 .col-md-2 {
    border: 1px solid black;
    height:200px;
+   text-align: center;
 }
 
 .col-md-3 {
    border: 1px solid black;
    height:200px;
+   text-align: center;
 }
 
 .col-md-4 {
    border: 1px solid black;
    height:200px;
+   text-align: center;
 }
 
 body {
@@ -118,6 +122,11 @@ body {
    margin: 0 auto;
    width: 300px;
    margin-top: 200px;
+}
+
+/* Override Bootstrap's border-radius setting for block-sized radio buttons */
+.btn-group > .btn.btn-block {
+   border-radius: 5px !important;
 }
 
 #lobby {
