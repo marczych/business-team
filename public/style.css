@@ -30,3 +30,50 @@ ul {
    list-style: none;
    word-wrap: break-word;
 }
+
+#animation_area {
+   height:200px;
+   width: 100%;
+   padding-top: 70px;
+   background-color: green;
+   color: white;
+   text-align: center;
+}
+
+#animation_area > h1 {
+   margin-top: 0px;
+}
+
+#instruction_area {
+   height: 200px;
+   width: 100%;
+   padding-top: 60px;
+   background-color: #666;
+   color: white;
+   text-align: center;
+}
+
+#instruction_area > h1 {
+   margin-top: 0px;
+}
+
+.progress {
+   width: 100%;
+   margin-bottom: 0px;
+}
+
+#button_layout {
+   height:400px;
+   width:100%;
+   background-color: #888;
+}
+
+.col-md-2 {
+   border: 1px solid black;
+   height:200px;
+}
+
+.col-md-4 {
+   border: 1px solid black;
+   height:200px;
+}
