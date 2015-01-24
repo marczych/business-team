@@ -7,7 +7,6 @@ $( document ).ready(function() {
 
 	panels[0].makePanel();
 	panels[1].makePanel();
-	run();
 });
 
 function newPanel(control, action, size) {
