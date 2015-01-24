@@ -1,0 +1,11 @@
+[Unit]
+Description=business-team
+
+[Service]
+Type=simple
+ExecStart=/bin/node .
+WorkingDirectory=/opt/business-team
+Environment="PORT=80"
+
+[Install]
+WantedBy=multi-user.target

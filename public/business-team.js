@@ -6,9 +6,8 @@ $( document ).ready(function() {
    animate(myBar);
 
 	panels[0].makePanel();
+	panels[1].makePanel();
 });
-
-//$('#pane').append("<div class='col-md-5'>content</div>");
 
 function newPanel(control, action, size) {
 	$('#topRow').append("<div class='col-md-" + size + "'>" + control + "<br /><button type='button' class='btn btn-default btn-primary'>" + action + "</button></div>");
@@ -47,8 +46,24 @@ function progressBar(startingPercent) {
    }
 }
 
+// Go from splash page to lobby page
+function viewLobby() {
+   $('#splash_page').hide();
+   $('#lobby').show();
+
+   // Change background opacity
+   $('#big').css('background', 'rgba(255, 255, 255, 0.9)');
+}
+
+// Go from lobby page to main game view
+function viewGame() {
+   $('#landing_page').hide();
+   $('#main').show();
+}
+
 panels = new Array();
-panels.push(new Panel("Business Socks", "switch", "3", "Put on", "Take off"))
+panels.push(new Panel("Business Socks", "switch", "2", "Put on", "Take off"));
+panels.push(new Panel("Documents", "button", "1", "Shred"));
 
 function Panel(control, inputType, divWidth, action1, action2, action3) {
 	this.control = control;
@@ -59,15 +74,13 @@ function Panel(control, inputType, divWidth, action1, action2, action3) {
 	this.divWidth = divWidth;
 
 	this.makePanel = function() {
-		console.log(inputType);
 		switch (this.inputType) {
 			case "button":
-				$('#topRow').append("<div class='col-md-" + divWidth + "'>" + control + "<br /><button type='button' class='btn btn-default btn-primary'>" + action1 + "</button></div>");
+				$('#topRow').append("<div class='col-md-" + divWidth + "'><h3>" + control + "</h3><button type='button' class='btn btn-lg btn-block btn-primary'>" + action1 + "</button></div>");
 				break;
 
 			case "switch":
-				console.log("yolo");
-				$('#topRow').append("<div class='col-md-" + divWidth + "'>" + control + "<br /><div class='btn-group' data-toggle='buttons'><label class='btn btn-primary'><input type='radio' name='control' id='option1' autocomplete='off' checked>" + action1 + "</label><label class='btn btn-primary'><input type='radio' name='options' id='option2' autocomplete='off'>" + action2 + "</label></div></div>");
+				$('#topRow').append("<div class='col-md-" + divWidth + "'><h3>" + control + "</h3><div class='btn-group' data-toggle='buttons'><label class='btn btn-lg btn-block btn-primary'><input type='radio' name='control' id='option1' autocomplete='off' checked>" + action1 + "</label><label class='btn btn-lg btn-block btn-primary'><input type='radio' name='options' id='option2' autocomplete='off'>" + action2 + "</label></div></div>");
 				break;
 		}
 	}
