@@ -5,6 +5,7 @@
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
       <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
       <script src="jquery.knob.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="style.css">
       <script>
          $(function($) {
             $("input.knob").knob({
@@ -22,6 +23,15 @@
          <div class="demo">
             <input class="knob" data-angleOffset=-135 data-angleArc=270
             data-fgColor="#33FF33" data-rotation="clockwise" value="1">
+         </div>
+
+         <div class="onoffswitch">
+            <input type="checkbox" name="onoffswitch"
+            class="onoffswitch-checkbox" id="myonoffswitch" checked>
+            <label class="onoffswitch-label" for="myonoffswitch">
+               <span class="onoffswitch-inner"></span>
+               <span class="onoffswitch-switch"></span>
+            </label>
          </div>
       </div>
    </body>
