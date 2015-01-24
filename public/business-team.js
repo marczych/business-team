@@ -6,9 +6,9 @@ $( document ).ready(function() {
    animate(myBar);
 
 	panels[0].makePanel();
+	panels[1].makePanel();
+	run();
 });
-
-//$('#pane').append("<div class='col-md-5'>content</div>");
 
 function newPanel(control, action, size) {
 	$('#topRow').append("<div class='col-md-" + size + "'>" + control + "<br /><button type='button' class='btn btn-default btn-primary'>" + action + "</button></div>");
@@ -48,7 +48,8 @@ function progressBar(startingPercent) {
 }
 
 panels = new Array();
-panels.push(new Panel("Business Socks", "switch", "3", "Put on", "Take off"))
+panels.push(new Panel("Business Socks", "switch", "2", "Put on", "Take off"));
+panels.push(new Panel("Documents", "button", "1", "Shred"));
 
 function Panel(control, inputType, divWidth, action1, action2, action3) {
 	this.control = control;
@@ -59,14 +60,12 @@ function Panel(control, inputType, divWidth, action1, action2, action3) {
 	this.divWidth = divWidth;
 
 	this.makePanel = function() {
-		console.log(inputType);
 		switch (this.inputType) {
 			case "button":
 				$('#topRow').append("<div class='col-md-" + divWidth + "'>" + control + "<br /><button type='button' class='btn btn-default btn-primary'>" + action1 + "</button></div>");
 				break;
 
 			case "switch":
-				console.log("yolo");
 				$('#topRow').append("<div class='col-md-" + divWidth + "'>" + control + "<br /><div class='btn-group' data-toggle='buttons'><label class='btn btn-primary'><input type='radio' name='control' id='option1' autocomplete='off' checked>" + action1 + "</label><label class='btn btn-primary'><input type='radio' name='options' id='option2' autocomplete='off'>" + action2 + "</label></div></div>");
 				break;
 		}
