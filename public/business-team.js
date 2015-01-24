@@ -3,8 +3,7 @@ $( document ).ready(function() {
    var myBar = new progressBar(50);
 
    // Animate the progress bar
-      animate(myBar);
-      console.log("finished first animation");
+   animate(myBar);
 
 	panels[0].makePanel();
 });
@@ -18,10 +17,10 @@ function newPanel(control, action, size) {
 function wipeRow() {
 	$('#topRow').empty();
 }
+
 function animate(myBar) {
-   console.log("starting to animate");
    myBar.adjustProgressBar();
-   setTimeout(myBar.animate, 100);
+   setTimeout(animate, 100, myBar);
 }
 
 function progressBar(startingPercent) {
@@ -38,17 +37,13 @@ function progressBar(startingPercent) {
    }
 
    this.adjustProgressBar = function() {
-      console.log("starting to adjust");
-      console.log("percent is " + this.percent);
-
       if (this.percent >= 100) {
-         console.log("got too wide");
          this.setPercent(0);
       }
 
-      this.setPercent(this.getPercent() +10);
-      console.log("percent is now " + this.percent);
-
+      if (this.percent < 100) {
+         this.setPercent(this.getPercent() + 1);
+      }
    }
 }
 
