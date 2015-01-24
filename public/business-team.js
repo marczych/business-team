@@ -47,6 +47,21 @@ function progressBar(startingPercent) {
    }
 }
 
+// Go from splash page to lobby page
+function viewLobby() {
+   $('#splash_page').hide();
+   $('#lobby').show();
+
+   // Change background opacity
+   $('#big').css('background', 'rgba(255, 255, 255, 0.9)');
+}
+
+// Go from lobby page to main game view
+function viewGame() {
+   $('#landing_page').hide();
+   $('#main').show();
+}
+
 panels = new Array();
 panels.push(new Panel("Business Socks", "switch", "2", "Put on", "Take off"));
 panels.push(new Panel("Documents", "button", "1", "Shred"));

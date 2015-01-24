@@ -87,3 +87,48 @@ ul {
    border: 1px solid black;
    height:200px;
 }
+
+body {
+   background-image: url('http://mawquality.com/Content/Images/business.jpg');
+   background-repeat: no-repeat;
+   background-size: cover;
+}
+
+#main {
+   display: none;
+}
+
+#big {
+   margin-top: 180px;
+   margin-left: auto;
+   margin-right: auto;
+   padding-left: 20px;
+   width:900px;
+   border-radius: 5px;
+   background: rgba(255, 255, 255, 0.5);
+}
+
+#big h1 {
+   font-family: courier;
+   text-align:center;
+}
+
+#play_button {
+   display: block;
+   margin: 0 auto;
+   width: 300px;
+   margin-top: 200px;
+}
+
+#lobby {
+   display: none;
+}
+
+#lobby h2 {
+   margin-bottom: 40px;
+}
+
+.lobby_input {
+   margin-right: 20px;
+   margin-left: 10px;
+}
