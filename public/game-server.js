@@ -12,6 +12,39 @@ var states = {
 };
 var state = states.lobby;
 
+var panelTemplates = [
+   {header: 'Front Door', button: 'Shut'},
+   {header: 'Documents', button: 'Shred'},
+   {header: 'TPS Reports', button: 'File'},
+   {header: 'Workers', button: 'Manage'},
+   {header: 'Bottom Line', button: 'Reiterate'},
+   {header: 'The Cloud', button: 'Embrace'},
+   {header: 'All-Hands Meeting', button: 'Attend'},
+   {header: 'Overtime Shift', button: 'Work'},
+   {header: 'Milton\'s Stapler', button: 'Steal'},
+   {header: 'Dwight', button: 'Prank'},
+   {header: 'Customers', button: 'Avoid'},
+   {header: 'Cocaine!!', button: 'Cocaine?!'},
+   {header: 'Costs', button: 'Cut'},
+   {header: 'S.W.A.T.', button: 'Call'},
+   {header: 'Paradigm Shift', button: 'Initiate'},
+   {header: 'Default Password', button: 'Change'},
+   {header: 'Customers', button: 'Touch Base With'},
+   {header: 'Quarterly Report', button: 'Present'},
+   {header: 'Radar', button: 'Get On'},
+   {header: 'Banana Stand', button: 'Burn'},
+   {header: 'Target Audience', button: 'Find'},
+   {header: '401K', button: 'Invest In'},
+   {header: 'Kool-Aid', button: 'Drink'},
+   {header: 'Ship', button: 'Abandon'},
+   {header: 'Suppliers', button: 'Leverage'},
+   {header: 'Receipts', button: 'Collect'},
+];
+panelTemplates.forEach(function(panel) {
+   panel.identifier = uuid.v4();
+   panel.action = panel.button + ' the ' + panel.header;
+});
+
 var players;
 var panels;
 var globalTasks;
@@ -133,8 +166,16 @@ var gameServer = {
       penalties = [];
 
       Object.keys(players).forEach(function(identifier) {
-         players[identifier].stageLoaded = false;
-         players[identifier].task = undefined;
+         var playerPanels = shuffleArray(panelTemplates).slice(0, 5);
+         playerPanels.forEach(function(panel) {
+            panels[panel.identifier] = panel;
+         });
+
+         var player = players[identifier];
+
+         player.stageLoaded = false;
+         player.task = undefined;
+         player.panels = playerPanels;
       });
    },
 
@@ -204,6 +245,12 @@ function now() {
 
 function actionEquals(a, b) {
    return a == b;
+}
+
+function shuffleArray(arr) {
+   var arrCopy = arr.slice();
+   arrCopy.sort(function() { return 0.5 - Math.random() });
+   return arrCopy;
 }
 
 var usernames = [
@@ -501,7 +548,7 @@ function createNewTask() {
 }
 
 function createAction() {
-   return 'Put on business socks';
+   return panels[shuffleArray(Object.keys(panels))[0]].action;
 }
 
 function shouldCreateGlobalTask() {
