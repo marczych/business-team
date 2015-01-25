@@ -52,7 +52,7 @@ $(document).ready(function() {
    socket.on('start stage', function() {
       console.log('stage update');
 
-      if (state != stages.game) {
+      if (state != states.game) {
          console.error('received start stage event when not in game state');
          return;
       }
@@ -68,7 +68,7 @@ $(document).ready(function() {
    socket.on('state update', function() {
       console.log('state update');
 
-      if (state != stages.game) {
+      if (state != states.game) {
          console.error('received state update event when not in game state');
          return;
       }
@@ -83,7 +83,7 @@ $(document).ready(function() {
    socket.on('complete stage', function() {
       console.log('complete stage');
 
-      if (state != stages.game) {
+      if (state != states.game) {
          console.error('received state update event when not in game state');
          return;
       }
@@ -98,7 +98,7 @@ $(document).ready(function() {
    socket.on('fail stage', function() {
       console.log('fail stage');
 
-      if (state != stages.game) {
+      if (state != states.game) {
          console.error('received state update event when not in game state');
          return;
       }
@@ -108,6 +108,7 @@ $(document).ready(function() {
       }
 
       // fail stage
+      state = states.lobby;
    });
 
    $window.on('lobby_join', function(ev, username) {

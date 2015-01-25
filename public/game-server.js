@@ -14,8 +14,14 @@ var state = states.lobby;
 
 var players;
 var panels;
-var tasks;
+var globalTasks;
 var lastGlobalTask;
+var stageNum;
+var numCompletedTasks;
+var penalties;
+
+var updatesPerSecond = 5;
+function globalTaskChance() { return 60 * 2 * updatesPerSecond(); }
 
 var gameServer = {
 
@@ -73,7 +79,7 @@ var gameServer = {
    },
 
    arePlayersLobbyReady: function() {
-      Object.keys(players).every(function(identifier) {
+      return Object.keys(players).every(function(identifier) {
          return players[identifier].lobbyReady;
       });
    },
@@ -82,7 +88,10 @@ var gameServer = {
    /////////////////////////////////////////////////////////////////////////
 
    initializeGame: function() {
-      Object.keys(players).every(function(playerId) {
+      stageNum = 0;
+
+      Object.keys(players).forEach(function(identifier) {
+         players[identifier].gameLoaded = false;
       });
    },
 
@@ -107,7 +116,7 @@ var gameServer = {
    },
 
    arePlayersGameLoaded: function() {
-      Object.keys(players).every(function(identifier) {
+      return Object.keys(players).every(function(identifier) {
          return players[identifier].gameLoaded;
       });
    },
@@ -115,9 +124,13 @@ var gameServer = {
    initializeStage: function() {
       panels = {};
       tasks = {};
+      globalTasks = {};
       lastGlobalTask = undefined;
+      numCompletedTasks = 0;
+      penalties = [];
 
       Object.keys(players).forEach(function(identifier) {
+         players[identifier].stageLoaded = false;
          players[identifier].task = undefined;
       });
    },
@@ -143,7 +156,7 @@ var gameServer = {
    },
 
    arePlayersStageLoaded: function() {
-      Object.keys(players).every(function(identifier) {
+      return Object.keys(players).every(function(identifier) {
          return players[identifier].stageLoaded;
       });
    },
@@ -170,6 +183,14 @@ function rand(min, max) {
    return Math.random() * (max - min) + min;
 }
 
+function now() {
+   return (new Date().getTime()) / 1000;
+}
+
+function actionEquals(a, b) {
+   return a == b;
+}
+
 function waitForPlayers(io) {}
 function updateGame(io) {
    if (isStageComplete()) {
@@ -182,12 +203,12 @@ function updateGame(io) {
       return;
    }
 
-   gameServer.delegateTasks(io);
-   gameServer.updatePlayersState();
+   delegateTasks(io);
+   updatePlayersState();
 }
 function loop() {
    callback(io);
-   setTimeout(loop, 200);
+   setTimeout(loop, 1000 / updatesPerSecond);
 }
 var callback = waitForPlayers;
 
@@ -222,6 +243,7 @@ function onLobbyJoin(socket, username) {
    console.log('lobby join');
 
    if (state != states.lobby) {
+      console.error('received lobby join event when not in lobby state');
       return;
    }
 
@@ -232,6 +254,7 @@ function onLobbyReady(socket) {
    console.log('lobby ready');
 
    if (state != states.lobby) {
+      console.error('received lobby ready event when not in lobby state');
       return;
    }
 
@@ -250,6 +273,7 @@ function onLobbyNotReady(socket) {
    console.log('lobby not ready');
 
    if (state != states.lobby) {
+      console.error('received lobby not ready event when not in lobby state');
       return;
    }
 
@@ -260,6 +284,7 @@ function onGameLoaded(socket) {
    console.log('game loaded');
 
    if (state != states.game) {
+      console.error('received game loaded event when not in game state');
       return;
    }
 
@@ -278,6 +303,7 @@ function onStageLoaded(socket) {
    console.log('stage loaded');
 
    if (state != states.game) {
+      console.error('received stage loaded event when not in game state');
       return;
    }
 
@@ -288,11 +314,40 @@ function onStageLoaded(socket) {
    }
 
    console.log('all stage loaded');
+
    callback = updateGame;
 }
 
 function onActionTaken(socket, action) {
    console.log('action taken');
+
+   if (state != states.game) {
+      console.error('received action taken event when not in game state');
+      return;
+   }
+
+   var handled = false;
+   Object.keys(players).forEach(function(identifier) {
+      var player = players[identifier];
+      var task = player.task;
+
+      if (!task || !task.action || !actionEquals(task.action, action)) {
+         return;
+      }
+
+      console.log('task handled');
+
+      handled = true;
+      task.completionDate = now();
+      player.task = undefined;
+      ++numCompletedTasks
+   });
+
+   if (!handled) {
+      console.log('task not needed');
+
+      penalties.push({type: 'unneeded', time: now()});
+   }
 }
 
 // Actions
@@ -300,34 +355,60 @@ function onActionTaken(socket, action) {
 
 function startGame() {
    callback = waitForPlayers;
+   state = states.game;
    gameServer.initializeGame();
    var gameData = {};
+
+   console.log('starting game');
+
    io.emit('start game', gameData);
 }
 
 function startStage() {
    callback = waitForPlayers;
    gameServer.initializeStage();
+   ++stageNum;
    var stageData = {};
+
+   console.log('starting stage');
+
    io.emit('start stage', stageData);
 }
 
 function isStageComplete() {
-   return false;
+   return numCompletedTasks >= 5 + (stageNum * 2);
 }
 
 function completeStage(results) {
+   console.log('complete stage');
+
    callback = waitForPlayers;
-   gameServer.initializeStage();
    io.emit('complete stage', results);
+
+   setTimeout(startStage, 2000);
 }
 
 function isStageFailed() {
-   return false;
+   var nowDate = now();
+
+   var penaltyScores = penalties.map(function(p) {
+      var delta = nowDate - p.time;
+      var penalty = Math.pow(delta, -0.5);
+      return p.type == 'missed' ? delta : /* unneeded */ delta / 4;
+   });
+
+   if (!(penaltyScores && penaltyScores.length)) {
+      return false;
+   }
+
+   return penaltyScores.reduce(function(a, b) { return a + b; }) >= 10;
 }
 
 function failStage(results) {
+   console.log('fail stage');
+
    callback = waitForPlayers;
+   state = states.lobby;
    io.emit('fail stage', results);
 }
 
@@ -341,37 +422,82 @@ function delegateTasks(io) {
    });
 
    if (shouldCreateGlobalTask()) {
-      createGlobalTask(io);
+      io.emit('global task', this.getNewGlobalTask());
    }
-};
+}
 
 function createNewTask() {
    var identifier = uuid.v4();
-   var creationDate = (new Date().getTime()) / 1000;
+   var creationDate = now();
    var expirationDate = creationDate + rand(8, 12);
-   var action = 'Put on business socks ' + rand(1, 10);
 
    var task = {
+      identifier: identifier,
       creationDate: creationDate,
       expirationDate: expirationDate,
-      action: action,
+      completionDate: undefined,
+      action: createAction(),
    };
+
+   console.log('create task');
+   console.log(task);
+
+   setTimeout(function() {
+      if (task.completionDate) {
+         return;
+      }
+
+      penalties.push({type: 'missed', time: expirationDate});
+   }, (expirationDate - creationDate) * 1000);
 
    return tasks[identifier] = task;
 }
 
-function createGlobalTask(io) {
-   var globalTask = this.getNextGlobalTask();
-   this.lastGlobalTask = globalTask;
-   io.emit('global task', globalTask);
+function createAction() {
+   return 'Put on business socks';
 }
 
 function shouldCreateGlobalTask() {
-   return false;
+   if (!lastGlobalTask) {
+      return false;
+   }
+
+   if (lastGlobalTask.expirationDate + 3 <= now()) {
+      return false;
+   }
+
+   return rand(1, globalTaskChance()) == 1;
 }
 
-function getNextGlobalTask() {
-   return undefined;
+function createNewGlobalTask() {
+   var identifier = uuid.v4();
+   var creationDate = now();
+   var expirationDate = creationDate + rand(8, 12);
+
+   var globalTask = {
+      identifier: identifier,
+      creationDate: creationDate,
+      expirationDate: expirationDate,
+      completionDate: undefined,
+      action: createGlobalAction(),
+   };
+
+   console.log('create global task');
+   console.log(globalTask);
+
+   setTimeout(function() {
+      if (globalTask.completionDate) {
+         return;
+      }
+
+      penalties.push({type: 'missed', time: expirationDate});
+   }, (expirationDate - creationDate) * 1000);
+
+   return lastGlobalTask = globalTasks[identifier] = globalTask;
+}
+
+function createGlobalAction() {
+   return "We're being acquired! Everybody shake!";
 }
 
 function updatePlayersState() {
