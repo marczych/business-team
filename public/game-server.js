@@ -19,6 +19,7 @@ var lastGlobalTask;
 var stageNum;
 var numCompletedTasks;
 var penalties;
+var maxPenaltyScore = 10;
 
 var updatesPerSecond = 5;
 function globalTaskChance() { return 60 * 2 * updatesPerSecond(); }
@@ -42,6 +43,7 @@ var gameServer = {
          lobbyReady: false,
          gameLoaded: false,
          stageLoaded: false,
+         panels: undefined,
          task: undefined,
       };
 
@@ -168,7 +170,15 @@ var gameServer = {
          var player = players[identifier];
          playerStates.push({
             socket: player.socket,
-            state: {},
+            state: {
+               panels: player.panels,
+               task: player.task,
+               stageNum: stageNum,
+               numCompletedTasks: numCompletedTasks,
+               neededCompletedTasks: calculateNeededCompletedTasks(),
+               penaltyScore: calculatePenaltyScore(),
+               maxPenaltyScore: maxPenaltyScore,
+            },
          });
       });
       return playerStates;
@@ -400,7 +410,11 @@ function startStage() {
 }
 
 function isStageComplete() {
-   return numCompletedTasks >= 5 + (stageNum * 2);
+   return numCompletedTasks >= calculateNeededCompletedTasks();
+}
+
+function calculateNeededCompletedTasks() {
+   return 10 + ((stageNum - 1) * 2);
 }
 
 function completeStage(results) {
@@ -413,6 +427,10 @@ function completeStage(results) {
 }
 
 function isStageFailed() {
+   return calculatePenaltyScore() >= maxPenaltyScore;
+}
+
+function calculatePenaltyScore() {
    var nowDate = now();
 
    var penaltyScores = penalties.map(function(p) {
@@ -422,10 +440,10 @@ function isStageFailed() {
    });
 
    if (!(penaltyScores && penaltyScores.length)) {
-      return false;
+      return 0;
    }
 
-   return penaltyScores.reduce(function(a, b) { return a + b; }) >= 10;
+   return penaltyScores.reduce(function(a, b) { return a + b; });
 }
 
 function failStage(results) {
