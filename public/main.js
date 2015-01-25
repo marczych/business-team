@@ -1,4 +1,24 @@
-$(document).ready(function() {
+requirejs.config({
+   "paths": {
+      "jquery": "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min",
+      "jquery-ui": "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min",
+      "bootstrap": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min"
+   }
+});
+
+define([
+   'jquery',
+   'jquery-ui',
+   'business-team',
+   'socket.io/socket.io',
+   'business-team'
+], function(
+   jquery,
+   jqueryui,
+   bt,
+   io,
+   bt
+) {
    var $window = $(window);
    var socket = io();
    var identifier = undefined;
@@ -9,7 +29,7 @@ $(document).ready(function() {
    };
    var state = states.lobby;
 
-   $window.keydown(function(ev) {
+      $window.keydown(function(ev) {
       socket.emit('keypress', {
          keyCode: ev.keyCode
       });

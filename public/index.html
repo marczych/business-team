@@ -21,13 +21,11 @@
       </div>
 
       <div class="container-fluid" id="button_layout">
-        <button type="button" class="btn btn-default" id="addPanel" onclick="newPanel('peanut butter', 'make', 2)">Add a Panel</button>
-        <button type="button" class="btn btn-default" id="addPanel" onclick="newPanel('glass ceiling', 'break', 3)">Add a Panel</button>
-        <button type="button" class="btn btn-default" id="addPanel" onclick="newPanel('new product specs', 'double', 4)">Add a Panel</button>
-        <button type="button" class="btn btn-default" id="addPanel" onclick="wipeRow()">Remove Panels</button>
+
+        <button type="button" class="btn btn-default" id="addPanel">New Random Set</button>
          <!-- Buttons can be assigned as columns in each row -->
 
-         <div class="row" id="topRow">
+         <div class="row" id="panelRow">
          </div>
       </div>
    </div>
@@ -35,7 +33,7 @@
       <div id='big' class='jumbotron'>
          <div id="splash_page">
             <h1>Business Team</h1>
-            <button id='play_button' class='btn btn-success btn-lg' onclick="viewLobby()">BUSINESS!</button>
+            <button id='play_button' class='btn btn-success btn-lg'>BUSINESS!</button>
          </div>
          <div id="lobby">
             <div class='container'>
@@ -43,30 +41,25 @@
                <div id="user_input">
                   <label> Username<input id="username_input" class='lobby_input' type="text" placeholder="starlord"></input></label>
                   <label> IP Address <input id="ip_input" class='lobby_input' type="text" placeholder="192.168.1.101"></input></label>
-                  <button class="btn btn-default btn-success" onclick="alert('yo')">TOUCH BASE</button>
+                  <button class="btn btn-default btn-success">TOUCH BASE</button>
                </div>
 
                <h3>Other Players</h3>
                <!-- List of other players -->
                <div class='container'>
                   <ul id="player_list" class='list-unstyled'>
-                     <li><p class='lead'> Iron Man</p></li>
+                     <li><p class='lead'>Iron Man</p></li>
                      <li><p class='lead'>Captian</p></li>
                      <li><p class='lead'>Piderman</p></li>
                      <li><p class='lead'>Baman</p></li>
                   </ul>
                </div>
-               <button id="start_button" class='btn btn-large btn-success btn-block' onclick="viewGame()">IT'S BUSINESS TIME</button>
+               <button id="start_button" class='btn btn-large btn-success btn-block'>IT'S BUSINESS TIME</button>
             </div>
          </div>
       </div>
    </div>
 
-   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-   <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-   <script src="/socket.io/socket.io.js"></script>
-   <script src="business-team.js"></script>
-   <script src="main.js"></script>
+   <script data-main="main.js" src="require.js"></script>
 </body>
 </html>
