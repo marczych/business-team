@@ -110,7 +110,7 @@ $(document).ready(function() {
       // fail stage
    });
 
-   $window.on('lobby_join', function(ev) {
+   $window.on('lobby_join', function(ev, username) {
       console.log('lobby join');
 
       if (state != states.lobby) {
@@ -123,7 +123,7 @@ $(document).ready(function() {
          return;
       }
 
-      socket.emit('lobby join', ev);
+      socket.emit('lobby join', username);
    });
 
    $window.on('lobby_ready', function(ev) {
@@ -139,7 +139,7 @@ $(document).ready(function() {
          return;
       }
 
-      socket.emit('lobby ready', ev);
+      socket.emit('lobby ready');
    });
 
    $window.on('lobby_not_ready', function(ev) {
@@ -155,10 +155,10 @@ $(document).ready(function() {
          return;
       }
 
-      socket.emit('lobby not ready', ev);
+      socket.emit('lobby not ready');
    });
 
-   $window.on('action_taken', function(ev) {
+   $window.on('action_taken', function(ev, action) {
       console.log('action taken');
 
       if (state != states.game) {
@@ -171,6 +171,6 @@ $(document).ready(function() {
          return;
       }
 
-      socket.emit('action taken', ev);
+      socket.emit('action taken', action);
    });
 });
