@@ -158,6 +158,7 @@ define([
       this.divWidth = divWidth;
 
       this.makePanel = function() {
+         return;
          switch (this.inputType) {
             case "button":
                $('#panelRow').append("<div class='col-md-" + divWidth + "'><h3>" + control + "</h3><button data-key='" + action1 + " " + control + "' type='button' class='btn btn-lg btn-block btn-primary buttonButton'>" + action1 + "</button></div>");
@@ -170,7 +171,26 @@ define([
       }
    }
 
+   function makeNewPanel(header, button, action) {
+      $('#panelRow').append(
+         '<div class="col-md-2" data-action="' + action + '">' +
+            header +
+            '<br>' +
+            '<button type="button" class="btn btn-lg btn-block btn-primary buttonButton">' +
+               button +
+            '</button>' +
+         '</div>'
+      );
+   }
+
+   function clearPanels() {
+      $('#panelRow').empty();
+   }
+
+
    return {
       updateLobbyList: updateLobbyList,
+      makeNewPanel: makeNewPanel,
+      clearPanels: clearPanels,
    }
 });

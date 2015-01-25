@@ -105,6 +105,11 @@ define([
       }
 
       gGameState = data;
+      console.log(data);
+      bt.clearPanels();
+      data.panels.forEach(function(panel) {
+         bt.makeNewPanel(panel.header, panel.button, panel.action);
+      });
       socket.emit('stage loaded');
    });
 

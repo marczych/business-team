@@ -168,6 +168,7 @@ var gameServer = {
       Object.keys(players).forEach(function(identifier) {
          var playerPanels = shuffleArray(panelTemplates).slice(0, 5);
          playerPanels.forEach(function(panel) {
+            console.log(panel);
             panels[panel.identifier] = panel;
          });
 
@@ -407,6 +408,7 @@ function onStageLoaded(socket) {
 
 function onActionTaken(socket, action) {
    console.log('action taken');
+   console.log(action);
 
    if (state != states.game) {
       console.error('received action taken event when not in game state');
