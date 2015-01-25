@@ -29,8 +29,6 @@ define([
       $("#theBarItself").css("-o-transition", "width " + duration + "s linear");
       $("#theBarItself").css("transition", "width " + duration + "s linear");
 
-      console.log($("#theBarItself"));
-
       // Use a selector to get the current width of the theBarItself element
       this.getPercent = function() {
          return $("#theBarItself").width();
