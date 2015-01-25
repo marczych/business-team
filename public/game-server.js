@@ -470,6 +470,7 @@ function isStageComplete() {
 }
 
 function calculateNeededCompletedTasks() {
+   return 99999999;
    return 10 + ((stageNum - 1) * 2);
 }
 
