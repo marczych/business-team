@@ -101,7 +101,7 @@ body {
    background-size: cover;
 }
 
-#main, #game_over {
+#main, #game_over, #stage_complete {
    display: none;
 }
 

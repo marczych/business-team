@@ -76,11 +76,16 @@ define([
       $('#game_over').show();
    });
 
+   $(window).on('client_complete_stage', function(ev) {
+      $('#main').hide();
+      $('#stage_complete').show();
+   });
+
    $(window).on('client_delegate_task', function(event, task) {
       $('#instruction_text').text(task.action);
    });
 
-   $('#back_to_lobby').click(function() {
+   $('.back_to_lobby').click(function() {
       $('#game_over').hide();
       $('#landing_page').show();
    });
