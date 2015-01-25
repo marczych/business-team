@@ -5,41 +5,33 @@ define([
    jquery,
    jqueryui
 ) {
-   var myBar = new progressBar(50);
-
-   // Animate the progress bar
-   animate(myBar);
+   // Create a progress bar that will count down for 15 seconds
+   var myBar = new progressBar(15);
 
    $('#panelRow').delegate('.buttonButton', 'click', function() {
       $(window).trigger('action_taken', event.target.dataset.action);
    });
 
-   function animate(myBar) {
-      myBar.adjustProgressBar();
-      setTimeout(animate, 100, myBar);
-   }
 
-   function progressBar(startingPercent) {
-      this.percent = startingPercent;
-      $('#progressbar').append("<div class='progress-bar progress-bar-striped active' id='thebaritself' role='progressbar' aria-valuenow='45' aria-valuemin='0' aria-valuemax='100' style='width: " + this.percent + "%'>");
+   // Progress Bar functions
+   function progressBar(duration) {
+      $('#progressbar').append("<div class='progress-bar progress-bar-success active' id='theBarItself' role='progressbar' aria-valuenow='45' aria-valuemin='0' aria-valuemax='100' style='width: 100%'>");
 
+      // Set animations and transitions to last `duration` 
+      $("#theBarItself").css("-webkit-transition", "width " + duration + "s linear");
+      $("#theBarItself").css("-moz-transition", "width " + duration + "s linear");
+      $("#theBarItself").css("-o-transition", "width " + duration + "s linear");
+      $("#theBarItself").css("transition", "width " + duration + "s linear");
+
+      console.log($("#theBarItself"));
+
+      // Use a selector to get the current width of the theBarItself element
       this.getPercent = function() {
-         return this.percent;
+         return $("#theBarItself").width();
       }
 
       this.setPercent = function(newPercent) {
-         $("#thebaritself").width(newPercent + "%");
-         this.percent = newPercent;
-      }
-
-      this.adjustProgressBar = function() {
-         if (this.percent >= 100) {
-            this.setPercent(0);
-         }
-
-         if (this.percent < 100) {
-            this.setPercent(this.getPercent() + 1);
-         }
+         $("#theBarItself").width(newPercent + "%");
       }
    }
 
