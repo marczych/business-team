@@ -96,7 +96,6 @@ body {
    background-image: url('http://mawquality.com/Content/Images/business.jpg');
    background-repeat: no-repeat;
    background-size: cover;
-   overflow: hidden;
 }
 
 #main {
@@ -128,10 +127,6 @@ body {
 /* Override Bootstrap's border-radius setting for block-sized radio buttons */
 .btn-group > .btn.btn-block {
    border-radius: 5px !important;
-}
-
-#lobby {
-   display: none;
 }
 
 #lobby h2 {
