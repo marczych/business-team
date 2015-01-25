@@ -159,6 +159,10 @@ define([
       $window.trigger('client_fail_stage');
    });
 
+   socket.on('delegate task', function(task) {
+      $window.trigger('client_delegate_task', task);
+   });
+
    $window.on('lobby_ready', function(ev) {
       console.log('lobby ready');
 

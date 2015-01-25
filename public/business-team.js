@@ -127,6 +127,10 @@ define([
       $('#game_over').show();
    });
 
+   $(window).on('client_delegate_task', function(event, task) {
+      $('#instruction_text').text(task.action);
+   });
+
    $('#back_to_lobby').click(function() {
       $('#game_over').hide();
       $('#landing_page').show();
