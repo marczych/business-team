@@ -74,11 +74,6 @@ define([
       $('#landing_page').show();
    });
 
-   $('#teamButton').click(moveTeam);
-   function moveTeam() {
-      $("#team").animate({left: "+=5%"}, 200);
-   }
-
    function newTask(task) {
       $('#instruction_area').append("<div class='alert alert-success' role='alert'>" + task + "</div>");
    }

@@ -68,7 +68,7 @@ p.lead.me {
 #button_layout {
    height: 400px;
    width: 100%;
-   background-color: #888;
+   background: rgba(255, 255, 255, 0.85);
 }
 
 .col-md-1 {
