@@ -34,7 +34,7 @@ ul {
 #animation_area {
    height:200px;
    width: 100%;
-   padding-top: 70px;
+
    background-color: green;
    color: white;
    text-align: center;
@@ -136,4 +136,24 @@ body {
 .lobby_input {
    margin-right: 20px;
    margin-left: 10px;
+}
+
+
+@-webkit-keyframes bgscroll {
+   from {background-position:0 0;}
+   to {background-position:-520px -0px;}
+}
+
+.ani {
+  background: url("office.jpg");
+  color:#ecf2f9;
+  text-align:center;
+  -webkit-animation:bgscroll 10s infinite linear;
+}
+
+.container {
+   height: 200px;
+  margin: 0 auto;
+  position: relative;
+  padding: 2em;
 }

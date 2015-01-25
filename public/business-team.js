@@ -120,6 +120,8 @@ define([
       $('#landing_page').hide();
       $('#main').show();
    });
+   $('#landing_page').hide();
+      $('#main').show();
 
    function Panel(control, inputType, divWidth, action1, action2, action3) {
       this.control = control;
