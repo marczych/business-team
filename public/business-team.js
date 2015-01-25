@@ -101,9 +101,12 @@ define([
    }
 
    $('#start_button').click(function() {
+      $(window).trigger('lobby_ready');
+   });
+
+   $(window).on('client_start_game', function(ev) {
       $('#landing_page').hide();
       $('#main').show();
-      $(window).trigger('lobby_ready');
    });
 
    function Panel(control, inputType, divWidth, action1, action2, action3) {

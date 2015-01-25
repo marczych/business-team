@@ -75,6 +75,8 @@ define([
 
       state = states.game;
 
+      $window.trigger('client_start_game');
+
       socket.emit('game loaded');
    });
 
