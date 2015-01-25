@@ -123,7 +123,7 @@ $(document).ready(function() {
          return;
       }
 
-      socket.emit('lobby join', username);
+      socket.emit('lobby join', {username: username});
    });
 
    $window.on('lobby_ready', function(ev) {
