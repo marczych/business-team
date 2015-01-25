@@ -48,7 +48,9 @@ define([
    $('#addPanel').click(newButtons);
 
    newButtons();
-   $('#panelRow').delegate('.buttonButton', 'click', function() { console.log(event.target.dataset.key); });
+   $('#panelRow').delegate('.buttonButton', 'click', function() {
+      $(window).trigger('action_taken', event.target.dataset.key);
+   });
 
    function newButtons() {
       wipeRow();
@@ -101,6 +103,7 @@ define([
    $('#start_button').click(function() {
       $('#landing_page').hide();
       $('#main').show();
+      $(window).trigger('lobby_ready');
    });
 
    function Panel(control, inputType, divWidth, action1, action2, action3) {
