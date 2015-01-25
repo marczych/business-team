@@ -5,18 +5,8 @@
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
       <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
       <script src="jquery.knob.min.js"></script>
+      <script src="rangeslider.js"></script>
       <link rel="stylesheet" type="text/css" href="style.css">
-      <script>
-         $(function($) {
-            $("input.knob").knob({
-               min: 1,
-               max: 5,
-               release : function (value) {
-                  console.log("Knob release value: " + value);
-               },
-            });
-         });
-      </script>
    </head>
    <body>
       <div>
@@ -33,6 +23,29 @@
                <span class="onoffswitch-switch"></span>
             </label>
          </div>
+
+           </br>
+         <input type="range" min="1" max="5" step="1" value="1">
+
       </div>
    </body>
+
+   <script>
+      $(function($) {
+         $("input.knob").knob({
+            min: 1,
+            max: 5,
+            release : function (value) {
+               console.log("Knob release value: " + value);
+            },
+         });
+      });
+
+      $('input[type=range]').rangeslider({
+         polyfill: false,
+         onSlideEnd: function(position, value) {
+            console.log(value);
+         }
+      });
+   </script>
 </html>
