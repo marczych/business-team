@@ -12,5 +12,5 @@ server.listen(port, function () {
 // Routing
 app.use(express.static(__dirname + '/public'));
 
-var gameServer = require('./game-server')(io);
+var gameServer = require('./public/game-server')(io);
 gameServer.play();
