@@ -38,6 +38,7 @@ var gameServer = {
       var player = {
          identifier: identifier,
          socket: socket,
+         username: getNextUsername(),
          lobbyReady: false,
          gameLoaded: false,
          stageLoaded: false,
@@ -191,6 +192,22 @@ function actionEquals(a, b) {
    return a == b;
 }
 
+var usernames = [
+   'Batman',
+   'Superman',
+   'Wonder Woman',
+   'Aqua Man',
+   'Shazzam',
+   'Green Lantern',
+   'Cyborg',
+   'Flash',
+   'Martial Man Hunter',
+];
+var lastUsername = 0;
+function getNextUsername() {
+   return usernames[(lastUsername++) % usernames.length];
+}
+
 function waitForPlayers(io) {}
 function updateGame(io) {
    if (isStageComplete()) {
@@ -225,6 +242,17 @@ function onConnect(socket) {
 
    var player = gameServer.addPlayer(socket);
    socket.emit('connected', player.identifier);
+
+   var playerList = [];
+   Object.keys(players).forEach(function(identifier) {
+      var player = players[identifier];
+      playerList.push({
+         identifier: player.identifier,
+         username: player.username,
+         ready: player.lobbyReady,
+      });
+   });
+   io.emit('lobby list', playerList);
 }
 
 function onDisconnect(socket) {
@@ -368,11 +396,10 @@ function startStage() {
    callback = waitForPlayers;
    gameServer.initializeStage();
    ++stageNum;
-   var stageData = {};
 
    console.log('starting stage');
 
-   io.emit('start stage', stageData);
+   updatePlayersState(/* first time */ true);
 }
 
 function isStageComplete() {
@@ -500,9 +527,10 @@ function createGlobalAction() {
    return "We're being acquired! Everybody shake!";
 }
 
-function updatePlayersState() {
+function updatePlayersState(firstTime) {
+   var eventName = firstTime ? 'start stage' : 'state update';
    gameServer.getPlayerStates().forEach(function(playerState) {
-      playerState.socket.emit('state update', playerState.state);
+      playerState.socket.emit(eventName, playerState.state);
    });
 }
 

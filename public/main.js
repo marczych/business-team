@@ -29,7 +29,7 @@ define([
    };
    var state = states.lobby;
 
-      $window.keydown(function(ev) {
+   $window.keydown(function(ev) {
       socket.emit('keypress', {
          keyCode: ev.keyCode
       });
@@ -51,6 +51,12 @@ define([
       console.error('cannot join game in progress');
    });
 
+   socket.on('lobby list', function(data) {
+      console.log('lobby list');
+
+      gPlayerList = data;
+   });
+
    socket.on('start game', function() {
       console.log('start game');
 
@@ -65,11 +71,10 @@ define([
 
       state = states.game;
 
-      // load game things
       socket.emit('game loaded');
    });
 
-   socket.on('start stage', function() {
+   socket.on('start stage', function(data) {
       console.log('stage update');
 
       if (state != states.game) {
@@ -81,11 +86,11 @@ define([
          console.error('received start stage event before identifier');
       }
 
-      // load stage things
+      gGameState = data;
       socket.emit('stage loaded');
    });
 
-   socket.on('state update', function() {
+   socket.on('state update', function(data) {
       console.log('state update');
 
       if (state != states.game) {
@@ -97,7 +102,7 @@ define([
          console.error('received state update event before identifier');
       }
 
-      // update state
+      gGameState = data;
    });
 
    socket.on('complete stage', function() {
