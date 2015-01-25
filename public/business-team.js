@@ -121,6 +121,30 @@ define([
       $('#main').show();
    });
 
+   $('#landing_page').hide();
+   $('#main').show();
+
+   $('#teamButton').click(moveTeam);
+   function moveTeam() {
+      $("#team").animate({left: "+=5%"}, 200);
+   }
+
+   $('#taskButton').click(function() {
+      newTask('Do the thing')
+   });
+   function newTask(task) {
+      console.log("hi");
+      $('#instruction_area').append("<div class='alert alert-success' role='alert'>" + task + "</div>");
+   }
+
+   $('#taskKillButton').click(wipeTask);
+   function wipeTask() {
+      $('#instruction_area').empty()
+   }
+
+
+
+
    function Panel(control, inputType, divWidth, action1, action2, action3) {
       this.control = control;
       this.action1 = action1;

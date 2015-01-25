@@ -10,6 +10,12 @@
 </head>
 <body>
    <div id="main" class="container-fluid">
+      <div id="team">
+         <img src="team.png">
+      </div>
+      <div id="exit">
+         <img src="exit.jpg">
+      </div>
       <div id="animation_area">
          <div class="ani">
             <div class="container">
@@ -17,15 +23,17 @@
          </div>
       </div>
       <div id="instruction_area">
-         <h2>Develop Holistic Approach</h2>
       </div>
       <!-- Bootstrap Progress Bar -->
       <div class="progress" id="progressbar">
       </div>
 
       <div class="container-fluid" id="button_layout">
-
+         <b>Testing buttons: </b>
         <button type="button" class="btn btn-default" id="addPanel">New Random Set</button>
+        <button type="button" class="btn btn-default" id="teamButton">Move Team</button>
+        <button type="button" class="btn btn-default" id="taskButton">Make Task</button>
+        <button type="button" class="btn btn-default" id="taskKillButton">Remove Task</button>
          <!-- Buttons can be assigned as columns in each row -->
 
          <div class="row" id="panelRow">
@@ -48,7 +56,6 @@
          </div>
       </div>
    </div>
-
    <script data-main="main.js" src="require.js"></script>
 </body>
 </html>
