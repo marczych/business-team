@@ -121,9 +121,6 @@ define([
       $('#main').show();
    });
 
-   $('#landing_page').hide();
-   $('#main').show();
-
    $('#teamButton').click(moveTeam);
    function moveTeam() {
       $("#team").animate({left: "+=5%"}, 200);
