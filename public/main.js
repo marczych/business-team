@@ -1,4 +1,4 @@
-$(function() {
+$(document).ready(function() {
    var $window = $(window);
    var socket = io();
    var identifier = undefined;
@@ -7,11 +7,7 @@ $(function() {
       game: {},
       results: {},
    };
-   var state;
-
-   $(document).ready(function() {
-      state = states.lobby;
-   });
+   var state = states.lobby;
 
    $window.keydown(function(ev) {
       socket.emit('keypress', {
@@ -50,7 +46,7 @@ $(function() {
       state = states.game;
 
       // load game things
-      socket.emit('game loaded', identifier);
+      socket.emit('game loaded');
    });
 
    socket.on('start stage', function() {
@@ -66,7 +62,7 @@ $(function() {
       }
 
       // load stage things
-      socket.emit('stage loaded', identifier);
+      socket.emit('stage loaded');
    });
 
    socket.on('state update', function() {
@@ -84,7 +80,23 @@ $(function() {
       // update state
    });
 
-   $window.bind('lobby ready', function(ev) {
+   $window.on('lobby_join', function(ev) {
+      console.log('lobby join');
+
+      if (state != states.lobby) {
+         console.error('fired lobby join event when not in lobby state');
+         return;
+      }
+
+      if (!identifier) {
+         console.error('fired lobby ready event before identifier');
+         return;
+      }
+
+      socket.emit('lobby join', ev);
+   });
+
+   $window.on('lobby_ready', function(ev) {
       console.log('lobby ready');
 
       if (state != states.lobby) {
@@ -97,10 +109,10 @@ $(function() {
          return;
       }
 
-      socket.emit('lobby ready', identifier);
+      socket.emit('lobby ready', ev);
    });
 
-   $window.bind('lobby not ready', function(ev) {
+   $window.on('lobby_not_ready', function(ev) {
       console.log('lobby not ready');
 
       if (state != states.lobby) {
@@ -113,10 +125,10 @@ $(function() {
          return;
       }
 
-      socket.emit('lobby not ready', identifier);
+      socket.emit('lobby not ready', ev);
    });
 
-   $window.bind('action taken', function(ev) {
+   $window.on('action_taken', function(ev) {
       console.log('action taken');
 
       if (state != states.game) {
@@ -129,9 +141,6 @@ $(function() {
          return;
       }
 
-      socket.emit('action taken', {
-         identifier: identifier,
-         action: ev,
-      });
+      socket.emit('action taken', ev);
    });
 });

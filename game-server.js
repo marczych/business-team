@@ -28,6 +28,7 @@ var gameServer = {
 
    addPlayer: function(socket) {
       var identifier = uuid.v4();
+      socket.identifier = identifier;
       var player = {
          identifier: identifier,
          socket: socket,
@@ -38,24 +39,6 @@ var gameServer = {
       };
 
       return players[identifier] = player;
-   },
-
-   removePlayerBySocket: function(socket) {
-      var player = undefined;
-      Object.keys(players).forEach(function(identifier) {
-         if (players[identifier].socket == socket) {
-            player = players[identifier];
-         }
-      });
-      if (!player) {
-         console.log('player not found');
-
-         return undefined;
-      }
-
-      console.log('player found');
-
-      return this.removePlayer(player.identifier);
    },
 
    removePlayer: function(identifier) {
@@ -188,6 +171,10 @@ function rand(min, max) {
 }
 
 function waitForPlayers(io) {}
+function updateGame(io) {
+   gameServer.delegateTasks(io);
+   gameServer.updatePlayersState();
+}
 function loop() {
    callback(io);
    setTimeout(loop, 200);
@@ -213,7 +200,7 @@ function onDisconnect(socket) {
    console.log('disconnect');
 
    if (state == states.game) {
-      var player = gameServer.removePlayerBySocket(socket);
+      var player = gameServer.removePlayer(socket.identifier);
       socket.broadcast.emit('disconnected', player.identifier)
    } else {
       io.emit('game ended');
@@ -221,14 +208,24 @@ function onDisconnect(socket) {
    }
 }
 
-function onLobbyReady(socket, identifier) {
+function onLobbyJoin(socket, username) {
+   console.log('lobby join');
+
+   if (state != states.lobby) {
+      return;
+   }
+
+   players[socket.identifier].username = username;
+}
+
+function onLobbyReady(socket) {
    console.log('lobby ready');
 
    if (state != states.lobby) {
       return;
    }
 
-   gameServer.setPlayerLobbyReady(identifier);
+   gameServer.setPlayerLobbyReady(socket.identifier);
 
    if (!gameServer.arePlayersLobbyReady()) {
       return;
@@ -239,24 +236,24 @@ function onLobbyReady(socket, identifier) {
    startGame();
 }
 
-function onLobbyNotReady(socket, identifier) {
+function onLobbyNotReady(socket) {
    console.log('lobby not ready');
 
    if (state != states.lobby) {
       return;
    }
 
-   gameServer.setPlayerLobbyNotReady(identifier);
+   gameServer.setPlayerLobbyNotReady(socket.identifier);
 }
 
-function onGameLoaded(socket, data) {
+function onGameLoaded(socket) {
    console.log('game loaded');
 
    if (state != states.game) {
       return;
    }
 
-   gameServer.setPlayerGameLoaded(identifier);
+   gameServer.setPlayerGameLoaded(socket.identifier);
 
    if (!gameServer.arePlayersGameLoaded()) {
       return;
@@ -267,24 +264,24 @@ function onGameLoaded(socket, data) {
    startStage();
 }
 
-function onStageLoaded(socket, data) {
+function onStageLoaded(socket) {
    console.log('stage loaded');
 
    if (state != states.game) {
       return;
    }
 
-   gameServer.setPlayerStageLoaded(identifier);
+   gameServer.setPlayerStageLoaded(socket.identifier);
 
    if (!gameServer.arePlayersStageLoaded()) {
       return;
    }
 
    console.log('all stage loaded');
-   callback = delegateTasks;
+   callback = updateGame;
 }
 
-function onActionTaken(socket, data) {
+function onActionTaken(socket, action) {
    console.log('action taken');
 }
 
@@ -373,28 +370,32 @@ module.exports = function(ioConnection) {
    io.on('connection', function(socket) {
       onConnect(socket);
 
-      socket.on('disconnect', function(data) {
-         onDisconnect(socket, data);
+      socket.on('disconnect', function() {
+         onDisconnect(socket);
       });
 
-      socket.on('lobby ready', function(data) {
-         onLobbyReady(socket, data);
+      socket.on('lobby join', function(data) {
+         onLobbyJoin(socket, data.username);
       });
 
-      socket.on('lobby not ready', function(data) {
-         onLobbyNotReady(socket, data);
+      socket.on('lobby ready', function() {
+         onLobbyReady(socket);
       });
 
-      socket.on('game loaded', function(data) {
-         onGameLoaded(socket, data);
+      socket.on('lobby not ready', function() {
+         onLobbyNotReady(socket);
       });
 
-      socket.on('stage loaded', function(data) {
-         onStageLoaded(socket, data);
+      socket.on('game loaded', function() {
+         onGameLoaded(socket);
       });
 
-      socket.on('action taken', function(data) {
-         onActionTaken(socket, data.identifier, data.action);
+      socket.on('stage loaded', function() {
+         onStageLoaded(socket);
+      });
+
+      socket.on('action taken', function(action) {
+         onActionTaken(socket, action);
       });
    });
 
