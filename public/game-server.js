@@ -505,6 +505,8 @@ function createAction() {
 }
 
 function shouldCreateGlobalTask() {
+   return false;
+
    if (!lastGlobalTask) {
       return false;
    }
