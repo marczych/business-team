@@ -15,8 +15,8 @@ define([
       $(window).trigger('action_taken', event.target.dataset.action);
    });
 
-
-   // Progress Bar functions
+   // Create a new progress bar in the correct location the page with
+   // `duration` number of seconds.
    function progressBar(duration) {
       $('#progressbar').append("<div class='progress-bar progress-bar-success active' id='theBarItself' role='progressbar' aria-valuenow='45' aria-valuemin='0' aria-valuemax='100' style='width: 100%'>");
 
@@ -26,16 +26,8 @@ define([
       $("#theBarItself").css("-o-transition", "width " + duration + "s linear");
       $("#theBarItself").css("transition", "width " + duration + "s linear");
 
-      console.log($("#theBarItself"));
-
-      // Use a selector to get the current width of the theBarItself element
-      this.getPercent = function() {
-         return $("#theBarItself").width();
-      }
-
-      this.setPercent = function(newPercent) {
-         $("#theBarItself").width(newPercent + "%");
-      }
+      // Start the progress bar counting down to 0%
+      $("#theBarItself").width("0%");
    }
 
    // Convert list of connected players, convert to HTML, and add to the lobby
