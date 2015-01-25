@@ -101,7 +101,7 @@ body {
    background-size: cover;
 }
 
-#main {
+#main, #game_over {
    display: none;
 }
 

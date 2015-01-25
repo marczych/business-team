@@ -122,6 +122,16 @@ define([
       $('#main').show();
    });
 
+   $(window).on('client_fail_stage', function(ev) {
+      $('#main').hide();
+      $('#game_over').show();
+   });
+
+   $('#back_to_lobby').click(function() {
+      $('#game_over').hide();
+      $('#landing_page').show();
+   });
+
    $('#teamButton').click(moveTeam);
    function moveTeam() {
       $("#team").animate({left: "+=5%"}, 200);
@@ -131,7 +141,6 @@ define([
       newTask('Do the thing')
    });
    function newTask(task) {
-      console.log("hi");
       $('#instruction_area').append("<div class='alert alert-success' role='alert'>" + task + "</div>");
    }
 
@@ -139,9 +148,6 @@ define([
    function wipeTask() {
       $('#instruction_area').empty()
    }
-
-
-
 
    function Panel(control, inputType, divWidth, action1, action2, action3) {
       this.control = control;

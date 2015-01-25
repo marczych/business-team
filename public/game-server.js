@@ -501,9 +501,19 @@ function calculatePenaltyScore() {
 function failStage(results) {
    console.log('fail stage');
 
+   // Reset player state.
+   Object.keys(players).forEach(function(id) {
+      players[id].lobbyReady = false;
+      players[id].gameLoaded = false;
+      players[id].stageLoaded = false;
+      players[id].panels = undefined;
+      players[id].task = undefined;
+   });
+
    callback = waitForPlayers;
    state = states.lobby;
    io.emit('fail stage', results);
+   io.emit('lobby list', getLobbyList());
 }
 
 function delegateTasks(io) {
