@@ -174,6 +174,10 @@ var gameServer = {
       return playerStates;
    },
 
+   getPlayerCount: function() {
+      return Object.keys(players).length;
+   },
+
    play: loop,
 };
 
@@ -253,18 +257,22 @@ function onConnect(socket) {
       });
    });
    io.emit('lobby list', playerList);
+
+   console.log(gameServer.getPlayerCount() + ' players remain');
 }
 
 function onDisconnect(socket) {
    console.log('disconnect');
 
-   if (state == states.game) {
+   if (state == states.lobby) {
       var player = gameServer.removePlayer(socket.identifier);
       socket.broadcast.emit('disconnected', player.identifier)
    } else {
       io.emit('game ended');
       callback = waitForPlayers;
    }
+
+   console.log(gameServer.getPlayerCount() + ' players remain');
 }
 
 function onLobbyReady(socket) {
