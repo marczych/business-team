@@ -104,9 +104,10 @@ define([
    // list. Excludes the current user's name from the list of other players.
    function updateLobbyList(list, identifier) {
       var listHTML = gPlayerList.map(function(user) {
-         if (user.identifier !== identifier) {
-            return '<li><p class="lead">' + user.username + '</p></li>';
-         }
+         var meClass = user.identifier === identifier ? ' me' : '';
+         var readyText = user.ready ? ' (ready)' : '';
+         return '<li><p class="lead' + meClass + '">' + user.username +
+          readyText + '</p></li>';
       });
 
       $('#player_list').html(listHTML.join('\n'));

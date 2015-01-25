@@ -19,7 +19,6 @@ define([
 ) {
    var $window = $(window);
    var socket = io();
-   var identifier = undefined;
    var states = {
       lobby: {},
       game: {},
@@ -41,8 +40,7 @@ define([
          return;
       }
 
-      identifier = data;
-      console.log(data);
+      gIdentifier = data;
    });
 
    socket.on('disconnected', function(data) {
@@ -57,7 +55,7 @@ define([
          return user.identifier !== data;
       });
 
-      bt.updateLobbyList(gPlayerList, identifier);
+      bt.updateLobbyList(gPlayerList, gIdentifier);
    });
 
    socket.on('game in progress', function() {
@@ -72,7 +70,7 @@ define([
       console.log('lobby list');
 
       gPlayerList = data;
-      bt.updateLobbyList(gPlayerList, identifier);
+      bt.updateLobbyList(gPlayerList, gIdentifier);
    });
 
    socket.on('start game', function() {
@@ -83,7 +81,7 @@ define([
          return;
       }
 
-      if (!identifier) {
+      if (!gIdentifier) {
          console.error('received start game event before identifier');
       }
 
@@ -102,7 +100,7 @@ define([
          return;
       }
 
-      if (!identifier) {
+      if (!gIdentifier) {
          console.error('received start stage event before identifier');
       }
 
@@ -118,7 +116,7 @@ define([
          return;
       }
 
-      if (!identifier) {
+      if (!gIdentifier) {
          console.error('received state update event before identifier');
       }
 
@@ -133,7 +131,7 @@ define([
          return;
       }
 
-      if (!identifier) {
+      if (!gIdentifier) {
          console.error('received state update event before identifier');
       }
 
@@ -148,7 +146,7 @@ define([
          return;
       }
 
-      if (!identifier) {
+      if (!gIdentifier) {
          console.error('received state update event before identifier');
       }
 
@@ -164,7 +162,7 @@ define([
          return;
       }
 
-      if (!identifier) {
+      if (!gIdentifier) {
          console.error('fired lobby ready event before identifier');
          return;
       }
@@ -180,7 +178,7 @@ define([
          return;
       }
 
-      if (!identifier) {
+      if (!gIdentifier) {
          console.error('fired lobby not ready event before identifier');
          return;
       }
@@ -196,7 +194,7 @@ define([
          return;
       }
 
-      if (!identifier) {
+      if (!gIdentifier) {
          console.error('fired action taken event before identifier');
          return;
       }

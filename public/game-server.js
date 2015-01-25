@@ -222,6 +222,19 @@ function getNextUsername() {
    return usernames[(lastUsername++) % usernames.length];
 }
 
+function getLobbyList() {
+   var playerList = [];
+   Object.keys(players).forEach(function(identifier) {
+      var player = players[identifier];
+      playerList.push({
+         identifier: player.identifier,
+         username: player.username,
+         ready: player.lobbyReady,
+      });
+   });
+   return playerList;
+}
+
 function waitForPlayers(io) {}
 function updateGame(io) {
    if (isStageComplete()) {
@@ -257,16 +270,7 @@ function onConnect(socket) {
    var player = gameServer.addPlayer(socket);
    socket.emit('connected', player.identifier);
 
-   var playerList = [];
-   Object.keys(players).forEach(function(identifier) {
-      var player = players[identifier];
-      playerList.push({
-         identifier: player.identifier,
-         username: player.username,
-         ready: player.lobbyReady,
-      });
-   });
-   io.emit('lobby list', playerList);
+   io.emit('lobby list', getLobbyList());
 
    console.log(gameServer.getPlayerCount() + ' players remain');
 }
@@ -294,6 +298,7 @@ function onLobbyReady(socket) {
    }
 
    gameServer.setPlayerLobbyReady(socket.identifier);
+   io.emit('lobby list', getLobbyList());
 
    if (!gameServer.arePlayersLobbyReady()) {
       return;
@@ -301,7 +306,7 @@ function onLobbyReady(socket) {
 
    console.log('all lobby ready');
 
-   startGame();
+   setTimeout(startGame, 100);
 }
 
 function onLobbyNotReady(socket) {

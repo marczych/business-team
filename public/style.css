@@ -31,6 +31,10 @@ ul {
    word-wrap: break-word;
 }
 
+p.lead.me {
+   font-weight: bold;
+}
+
 #animation_area {
    height:200px;
    width: 100%;
