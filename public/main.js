@@ -51,6 +51,10 @@ define([
       console.error('cannot join game in progress');
    });
 
+   socket.on('game ended', function() {
+      window.location.reload();
+   });
+
    socket.on('lobby list', function(data) {
       console.log('lobby list');
 
