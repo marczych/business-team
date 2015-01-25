@@ -22,7 +22,7 @@
 
       <div class="container-fluid" id="button_layout">
 
-        <button type="button" class="btn btn-default" id="addPanel" onclick="newButtons()">New Random Set</button>
+        <button type="button" class="btn btn-default" id="addPanel">New Random Set</button>
          <!-- Buttons can be assigned as columns in each row -->
 
          <div class="row" id="topRow">
@@ -33,7 +33,7 @@
       <div id='big' class='jumbotron'>
          <div id="splash_page">
             <h1>Business Team</h1>
-            <button id='play_button' class='btn btn-success btn-lg' onclick="viewLobby()">BUSINESS!</button>
+            <button id='play_button' class='btn btn-success btn-lg'>BUSINESS!</button>
          </div>
          <div id="lobby">
             <div class='container'>
@@ -54,17 +54,12 @@
                      <li><p class='lead'>Baman</p></li>
                   </ul>
                </div>
-               <button id="start_button" class='btn btn-large btn-success btn-block' onclick="viewGame()">IT'S BUSINESS TIME</button>
+               <button id="start_button" class='btn btn-large btn-success btn-block'>IT'S BUSINESS TIME</button>
             </div>
          </div>
       </div>
    </div>
 
-   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-   <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-   <script src="/socket.io/socket.io.js"></script>
-   <script src="business-team.js"></script>
-   <script src="main.js"></script>
+   <script data-main="app.js" src="require.js"></script>
 </body>
 </html>

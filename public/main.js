@@ -1,4 +1,14 @@
-$(document).ready(function() {
+define([
+   'jquery',
+   'jquery-ui',
+   'business-team',
+   'socket.io/socket.io'
+], function(
+   jquery,
+   jqueryui,
+   bt,
+   io
+) {
    var $window = $(window);
    var socket = io();
    var identifier = undefined;
@@ -9,7 +19,7 @@ $(document).ready(function() {
    };
    var state = states.lobby;
 
-   $window.keydown(function(ev) {
+      $window.keydown(function(ev) {
       socket.emit('keypress', {
          keyCode: ev.keyCode
       });
