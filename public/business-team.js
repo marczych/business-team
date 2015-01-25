@@ -7,6 +7,12 @@ define([
 ) {
    var myBar = new progressBar(50);
 
+   function setNumberOfPlayers(n) {
+      console.log(n + ' players');
+      n = Math.max(2, Math.min(n, 6));
+      $('#teamGraphic').append("<img src='team/" + n + ".png'>");
+   }
+
    // Animate the progress bar
    animate(myBar);
 
@@ -106,6 +112,7 @@ define([
 
 
    return {
+      setNumberOfPlayers: setNumberOfPlayers,
       updateLobbyList: updateLobbyList,
       makeNewPanel: makeNewPanel,
       clearPanels: clearPanels,

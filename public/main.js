@@ -73,7 +73,7 @@ define([
       bt.updateLobbyList(gPlayerList, gIdentifier);
    });
 
-   socket.on('start game', function() {
+   socket.on('start game', function(data) {
       console.log('start game');
 
       if (state != states.lobby) {
@@ -86,6 +86,7 @@ define([
       }
 
       state = states.game;
+      bt.setNumberOfPlayers(data.numPlayers);
 
       $window.trigger('client_start_game');
 
@@ -106,6 +107,7 @@ define([
 
       gGameState = data;
       console.log(data);
+
       bt.clearPanels();
       data.panels.forEach(function(panel) {
          bt.makeNewPanel(panel.header, panel.button, panel.action);

@@ -213,7 +213,6 @@ var gameServer = {
          playerStates.push({
             socket: player.socket,
             state: {
-               numPlayers: Object.keys(players).length,
                panels: player.panels,
                task: player.task,
                stageNum: stageNum,
@@ -447,7 +446,9 @@ function startGame() {
    callback = waitForPlayers;
    state = states.game;
    gameServer.initializeGame();
-   var gameData = {};
+   var gameData = {
+      numPlayers: Object.keys(players).length,
+   };
 
    console.log('starting game');
 
