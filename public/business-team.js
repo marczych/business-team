@@ -8,6 +8,12 @@ define([
    // Create a progress bar that will count down for 15 seconds
    var myBar = new progressBar(15);
 
+   function setNumberOfPlayers(n) {
+      console.log(n + ' players');
+      n = Math.max(2, Math.min(n, 6));
+      $('#teamGraphic').append("<img src='team/" + n + ".png'>");
+   }
+
    $('#panelRow').delegate('.buttonButton', 'click', function() {
       $(window).trigger('action_taken', event.target.dataset.action);
    });
@@ -62,11 +68,16 @@ define([
       $('#game_over').show();
    });
 
+   $(window).on('client_complete_stage', function(ev) {
+      $('#main').hide();
+      $('#stage_complete').show();
+   });
+
    $(window).on('client_delegate_task', function(event, task) {
       $('#instruction_text').text(task.action);
    });
 
-   $('#back_to_lobby').click(function() {
+   $('.back_to_lobby').click(function() {
       $('#game_over').hide();
       $('#landing_page').show();
    });
@@ -98,6 +109,7 @@ define([
 
 
    return {
+      setNumberOfPlayers: setNumberOfPlayers,
       updateLobbyList: updateLobbyList,
       makeNewPanel: makeNewPanel,
       clearPanels: clearPanels,
