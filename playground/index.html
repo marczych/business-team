@@ -5,40 +5,15 @@
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
       <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
       <script src="jquery.knob.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="style.css">
       <script>
          $(function($) {
             $("input.knob").knob({
+               min: 1,
+               max: 5,
                release : function (value) {
                   console.log("Knob release value: " + value);
                },
-            });
-
-            var v, up = 0, down = 0, i = 0;
-            var incr = function() { i++; console.log(i); };
-            var decr = function() { i--; console.log(i); };
-            $("input.infinite").knob({
-               change : function () {
-                  if (v > this.cv){
-                     if (up) {
-                        decr();
-                        up = 0;
-                     } else {
-                        up = 1;
-                        down = 0;
-                     }
-                  } else {
-                     if (v < this.cv) {
-                        if (down) {
-                           incr();
-                           down = 0;
-                           } else {
-                           down = 1;
-                           up = 0;
-                        }
-                     }
-                  }
-                  v = this.cv;
-               }
             });
          });
       </script>
@@ -46,14 +21,17 @@
    <body>
       <div>
          <div class="demo">
-            <input class="knob" data-angleOffset=-125 data-angleArc=250
-            data-fgColor="#33FF33" data-rotation="clockwise" value="50">
+            <input class="knob" data-angleOffset=-135 data-angleArc=270
+            data-fgColor="#33FF33" data-rotation="clockwise" value="1">
          </div>
 
-         <div class="demo">
-            <input class="infinite" value="0" data-width="150"
-             data-thickness=".5" data-fgColor="#FFFFFF" data-bgColor="#33FF33"
-             data-displayInput="false" data-cursor=true>
+         <div class="onoffswitch">
+            <input type="checkbox" name="onoffswitch"
+            class="onoffswitch-checkbox" id="myonoffswitch" checked>
+            <label class="onoffswitch-label" for="myonoffswitch">
+               <span class="onoffswitch-inner"></span>
+               <span class="onoffswitch-switch"></span>
+            </label>
          </div>
       </div>
    </body>
