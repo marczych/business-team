@@ -91,7 +91,7 @@ define([
    function makeNewPanel(header, button, action) {
       $('#panelRow').append(
          '<div class="col-md-2">' +
-            header +
+            '<h3>' + header + '</h3>' +
             '<br>' +
             '<button type="button" class="btn btn-lg btn-block btn-primary buttonButton" data-action="' + action + '">' +
                button +
