@@ -48,6 +48,7 @@ define([
    $('#addPanel').click(newButtons);
 
    newButtons();
+   $('#panelRow').delegate('.buttonButton', 'click', function() { console.log(event.target.dataset.key); });
 
    function newButtons() {
       wipeRow();
@@ -57,15 +58,15 @@ define([
    }
 
    function newPanel(control, action, size) {
-      $('#topRow').append("<div class='col-md-" + size + "'>" + control + "<br /><button type='button' class='btn btn-default btn-primary'>" + action + "</button></div>");
+	   $('#panelRow').append("<div class='col-md-" + size + "'>" + control + "<br /><button type='button' class='btn btn-default btn-primary'>" + action + "</button></div>");
+   }
+
+   function wipeRow() {
+	   $('#panelRow').empty();
    }
 
    function newPanel(control, action, size) {
       $('#topRow').append("<div class='col-md-" + size + "'>" + control + "<br /><button type='button' class='btn btn-default btn-primary'>" + action + "</button></div>");
-   }
-
-   function wipeRow() {
-      $('#topRow').empty();
    }
 
    function animate(myBar) {
@@ -147,6 +148,26 @@ define([
 
             case "switch":
                $('#topRow').append("<div class='col-md-" + divWidth + "'><h3>" + control + "</h3><div class='btn-group' data-toggle='buttons'><label class='btn btn-lg btn-block btn-primary'><input type='radio' name='control' id='option1' autocomplete='off' checked>" + action1 + "</label><label class='btn btn-lg btn-block btn-primary'><input type='radio' name='options' id='option2' autocomplete='off'>" + action2 + "</label></div></div>");
+               break;
+         }
+      }
+   }
+   function Panel(control, inputType, divWidth, action1, action2, action3) {
+      this.control = control;
+      this.action1 = action1;
+      this.action2 = action2;
+      this.action3 = action3;
+      this.inputType = inputType;
+      this.divWidth = divWidth;
+
+      this.makePanel = function() {
+         switch (this.inputType) {
+            case "button":
+               $('#panelRow').append("<div class='col-md-" + divWidth + "'><h3>" + control + "</h3><button data-key='" + action1 + " " + control + "' type='button' class='btn btn-lg btn-block btn-primary buttonButton'>" + action1 + "</button></div>");
+               break;
+
+            case "switch":
+               $('#panelRow').append("<div class='col-md-" + divWidth + "'><h3>" + control + "</h3><div class='btn-group' data-toggle='buttons'><label class='btn btn-lg btn-block btn-primary'><input type='radio' name='control' id='option1' autocomplete='off' checked>" + action1 + "</label><label class='btn btn-lg btn-block btn-primary'><input type='radio' name='options' id='option2' autocomplete='off'>" + action2 + "</label></div></div>");
                break;
          }
       }
