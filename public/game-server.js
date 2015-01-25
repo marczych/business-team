@@ -213,6 +213,7 @@ var gameServer = {
          playerStates.push({
             socket: player.socket,
             state: {
+               numPlayers: Object.keys(players).length,
                panels: player.panels,
                task: player.task,
                stageNum: stageNum,
