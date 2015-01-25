@@ -98,14 +98,6 @@ define([
       }
    }
 
-   $('#play_button').click(function() {
-      $('#splash_page').hide();
-      $('#lobby').show();
-
-      // Change background opacity
-      $('#big').css('background', 'rgba(255, 255, 255, 0.9)');
-   });
-
    $('#start_button').click(function() {
       $('#landing_page').hide();
       $('#main').show();

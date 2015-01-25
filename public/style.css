@@ -130,10 +130,6 @@ body {
    border-radius: 5px !important;
 }
 
-#lobby {
-   display: none;
-}
-
 #lobby h2 {
    margin-bottom: 40px;
 }
