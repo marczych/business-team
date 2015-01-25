@@ -267,17 +267,6 @@ function onDisconnect(socket) {
    }
 }
 
-function onLobbyJoin(socket, username) {
-   console.log('lobby join');
-
-   if (state != states.lobby) {
-      console.error('received lobby join event when not in lobby state');
-      return;
-   }
-
-   players[socket.identifier].username = username;
-}
-
 function onLobbyReady(socket) {
    console.log('lobby ready');
 
@@ -544,10 +533,6 @@ module.exports = function(ioConnection) {
 
       socket.on('disconnect', function() {
          onDisconnect(socket);
-      });
-
-      socket.on('lobby join', function(data) {
-         onLobbyJoin(socket, data.username);
       });
 
       socket.on('lobby ready', function() {

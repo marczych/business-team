@@ -140,22 +140,6 @@ define([
       state = states.lobby;
    });
 
-   $window.on('lobby_join', function(ev, username) {
-      console.log('lobby join');
-
-      if (state != states.lobby) {
-         console.error('fired lobby join event when not in lobby state');
-         return;
-      }
-
-      if (!identifier) {
-         console.error('fired lobby ready event before identifier');
-         return;
-      }
-
-      socket.emit('lobby join', {username: username});
-   });
-
    $window.on('lobby_ready', function(ev) {
       console.log('lobby ready');
 
