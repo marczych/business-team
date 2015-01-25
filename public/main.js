@@ -11,13 +11,11 @@ define([
    'jquery-ui',
    'business-team',
    'socket.io/socket.io',
-   'business-team'
 ], function(
    jquery,
    jqueryui,
    bt,
-   io,
-   bt
+   io
 ) {
    var $window = $(window);
    var socket = io();
@@ -47,6 +45,21 @@ define([
       console.log(data);
    });
 
+   socket.on('disconnected', function(data) {
+      console.log('disconnected');
+
+      if (state != states.lobby) {
+         console.error('received disconnected event when not in lobby state');
+         return;
+      }
+
+      gPlayerList = gPlayerList.filter(function(user) {
+         return user.identifier !== data;
+      });
+
+      bt.updateLobbyList(gPlayerList, identifier);
+   });
+
    socket.on('game in progress', function() {
       console.error('cannot join game in progress');
    });
@@ -59,6 +72,7 @@ define([
       console.log('lobby list');
 
       gPlayerList = data;
+      bt.updateLobbyList(gPlayerList, identifier);
    });
 
    socket.on('start game', function() {

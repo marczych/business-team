@@ -100,6 +100,18 @@ define([
       }
    }
 
+   // Convert list of connected players, convert to HTML, and add to the lobby
+   // list. Excludes the current user's name from the list of other players.
+   function updateLobbyList(list, identifier) {
+      var listHTML = gPlayerList.map(function(user) {
+         if (user.identifier !== identifier) {
+            return '<li><p class="lead">' + user.username + '</p></li>';
+         }
+      });
+
+      $('#player_list').html(listHTML.join('\n'));
+   }
+
    $('#start_button').click(function() {
       $(window).trigger('lobby_ready');
    });
@@ -169,5 +181,9 @@ define([
                break;
          }
       }
+   }
+
+   return {
+      updateLobbyList: updateLobbyList,
    }
 });
