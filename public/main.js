@@ -135,7 +135,7 @@ define([
          console.error('received state update event before identifier');
       }
 
-      // complete stage
+      $window.trigger('client_complete_stage');
    });
 
    socket.on('fail stage', function() {
@@ -150,8 +150,8 @@ define([
          console.error('received state update event before identifier');
       }
 
-      // fail stage
       state = states.lobby;
+      $window.trigger('client_fail_stage');
    });
 
    $window.on('lobby_ready', function(ev) {
