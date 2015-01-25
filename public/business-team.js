@@ -5,9 +5,6 @@ define([
    jquery,
    jqueryui
 ) {
-   // Create a progress bar that will count down for 15 seconds
-   var myBar = new progressBar(15);
-
    function setNumberOfPlayers(n) {
       console.log(n + ' players');
       n = Math.max(2, Math.min(n, 6));
@@ -75,6 +72,8 @@ define([
 
    $(window).on('client_delegate_task', function(event, task) {
       $('#instruction_text').text(task.action);
+      var now = (new Date().getTime()) / 1000;
+      progressBar(task.expirationDate - now);
    });
 
    $('.back_to_lobby').click(function() {
@@ -82,13 +81,8 @@ define([
       $('#landing_page').show();
    });
 
-   $('#teamButton').click(moveTeam);
    function moveTeam() {
       $("#team").animate({left: "+=5%"}, 200);
-   }
-
-   function newTask(task) {
-      $('#instruction_area').append("<div class='alert alert-success' role='alert'>" + task + "</div>");
    }
 
    function makeNewPanel(header, button, action) {
