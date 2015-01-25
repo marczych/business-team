@@ -172,6 +172,16 @@ function rand(min, max) {
 
 function waitForPlayers(io) {}
 function updateGame(io) {
+   if (isStageComplete()) {
+      completeStage();
+      return;
+   }
+
+   if (isStageFailed()) {
+      failStage();
+      return;
+   }
+
    gameServer.delegateTasks(io);
    gameServer.updatePlayersState();
 }
@@ -302,10 +312,18 @@ function startStage() {
    io.emit('start stage', stageData);
 }
 
+function isStageComplete() {
+   return false;
+}
+
 function completeStage(results) {
    callback = waitForPlayers;
    gameServer.initializeStage();
    io.emit('complete stage', results);
+}
+
+function isStageFailed() {
+   return false;
 }
 
 function failStage(results) {
