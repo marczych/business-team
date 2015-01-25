@@ -31,7 +31,6 @@ define([
 
       // Start the progress bar counting down to 0%
       $("#theBarItself").width("0%");
-
    }
 
    // Convert list of connected players, convert to HTML, and add to the lobby
