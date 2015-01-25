@@ -5,9 +5,15 @@ $( document ).ready(function() {
    // Animate the progress bar
    animate(myBar);
 
-	panels[0].makePanel();
-	panels[1].makePanel();
+   newButtons();
 });
+
+function newButtons() {
+   wipeRow();
+   for(i = 0; i < 10; i++) {
+      panels[Math.floor(Math.random()*panels.length)].makePanel();
+   }
+}
 
 function newPanel(control, action, size) {
 	$('#topRow').append("<div class='col-md-" + size + "'>" + control + "<br /><button type='button' class='btn btn-default btn-primary'>" + action + "</button></div>");
@@ -62,8 +68,39 @@ function viewGame() {
 }
 
 panels = new Array();
-panels.push(new Panel("Business Socks", "switch", "2", "Put on", "Take off"));
-panels.push(new Panel("Documents", "button", "1", "Shred"));
+panels.push(new Panel("Front Door", "button", "2", "Open"));
+panels.push(new Panel("Documents", "button", "2", "Shred"));
+panels.push(new Panel("TPS Reports", "button", "2", "File"));
+panels.push(new Panel("Workers", "button", "2", "Manage"));
+panels.push(new Panel("Bottom Line", "button", "2", "Reiterate"));
+panels.push(new Panel("The Cloud", "button", "2", "Embrace"));
+panels.push(new Panel("Jeans", "button", "2", "Wear on Casual Friday"));
+panels.push(new Panel("All Hands Meeting", "button", "2", "Attend"));
+panels.push(new Panel("Overtime", "button", "2", "Work"));
+panels.push(new Panel("Dwight", "button", "2", "Prank"));
+panels.push(new Panel("Customers", "button", "2", "Avoid"));
+panels.push(new Panel("Cocaine!!", "button", "2", "Cocaine??"));
+panels.push(new Panel("Costs", "button", "2", "Cut"));
+panels.push(new Panel("Buy-in", "button", "2", "As for"));
+panels.push(new Panel("S.W.A.T. Team", "button", "2", "Call"));
+panels.push(new Panel("Running", "button", "2", "Hit the Ground"));
+panels.push(new Panel("Paradigm Shift", "button", "2", "Initiate"));
+panels.push(new Panel("Default Password", "button", "2", "Change"));
+panels.push(new Panel("Customers", "button", "2", "Touch Base With"));
+panels.push(new Panel("Quarterly Report", "button", "2", "Present"));
+panels.push(new Panel("Radar", "button", "2", "Get On"));
+panels.push(new Panel("Banana Stand", "button", "2", "Burn The"));
+panels.push(new Panel("Open", "button", "2", "Keep The Door"));
+panels.push(new Panel("Paradigm Shifts", "button", "2", "Experience"));
+panels.push(new Panel("Target Audience", "button", "2", "Find"));
+panels.push(new Panel("401K", "button", "2", "Invest in"));
+panels.push(new Panel("Kool-Aid", "button", "2", "Drink"));
+panels.push(new Panel("Ship", "button", "2", "Abandon"));
+panels.push(new Panel("Suppliers", "button", "2", "Leverage"));
+panels.push(new Panel("Full Service ;)", "button", "2", "Offer"));
+panels.push(new Panel("Retirement", "button", "2", "Daydream about"));
+panels.push(new Panel("Off the Record", "button", "2", "Talk"));
+panels.push(new Panel("Receipts", "button", "2", "Collect"));
 
 function Panel(control, inputType, divWidth, action1, action2, action3) {
 	this.control = control;
