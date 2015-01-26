@@ -563,7 +563,12 @@ function createNewTask() {
 }
 
 function createAction() {
-   return panels[shuffleArray(Object.keys(panels))[0]].action;
+   return getRandomActivePanel().action;
+}
+
+function getRandomActivePanel() {
+   var keys = Object.keys(panels);
+   return panels[keys[ keys.length * Math.random() << 0]];
 }
 
 function shouldCreateGlobalTask() {
