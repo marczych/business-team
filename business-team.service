@@ -6,6 +6,7 @@ Type=simple
 ExecStart=/bin/node .
 WorkingDirectory=/opt/business-team
 Environment="PORT=80"
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
