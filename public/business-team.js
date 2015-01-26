@@ -81,8 +81,8 @@ define([
 
       $('#instruction_text').text(task.action);
 
-      var now = (new Date().getTime()) / 1000;
-      lastInterval = timer(task.expirationDate - now);
+      // var now = (new Date().getTime()) / 1000;
+      // lastInterval = timer(task.expirationDate - now);
       // progressBar(task.expirationDate - now);
    });
 
