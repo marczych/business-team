@@ -30,6 +30,17 @@ define([
       $("#theBarItself").width("0%");
    }
 
+   function timer(duration) {
+      $('#time').text(Math.floor(duration));
+      return setInterval(function() {
+         var remainingDuration = parseInt($('#time').text(), 10) - 1;
+         if (lastInterval && remainingDuration < 0) {
+            clearInterval(lastInterval);
+         }
+         $('#time').text(Math.floor(remainingDuration));
+      }, 1000);
+   }
+
    // Convert list of connected players, convert to HTML, and add to the lobby
    // list. Excludes the current user's name from the list of other players.
    function updateLobbyList(list, identifier) {
@@ -62,14 +73,21 @@ define([
       $('#stage_complete').show();
    });
 
+   var lastInterval;
    $(window).on('client_delegate_task', function(event, task) {
+      if (lastInterval) {
+         clearInterval(lastInterval);
+      }
+
       $('#instruction_text').text(task.action);
+
       var now = (new Date().getTime()) / 1000;
-      progressBar(task.expirationDate - now);
+      lastInterval = timer(task.expirationDate - now);
+      // progressBar(task.expirationDate - now);
    });
 
    $(window).on('client_update_game_state', function(event, state) {
-      $('#tasks_completed').text(state.numCompletedTasks);
+      $('#number').text(state.numCompletedTasks);
    });
 
    $('.back_to_lobby').click(function() {

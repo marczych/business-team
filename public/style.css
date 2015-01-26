@@ -35,14 +35,6 @@ p.lead.me {
    font-weight: bold;
 }
 
-#instruction_text {
-   float: left;
-}
-
-#tasks_completed {
-   float: right;
-}
-
 #animation_area {
    height:200px;
    width: 100%;
