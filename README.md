@@ -15,6 +15,7 @@ npm install
 
 ```sh
 node .
+# Visit localhost:3000 in your web browser.
 ```
 
 # Lyrics
