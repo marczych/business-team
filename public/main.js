@@ -6,18 +6,12 @@ requirejs.config({
    }
 });
 
-define([
-   'jquery',
-   'jquery-ui',
-   'business-team',
-   'socket.io/socket.io',
-], function(
-   jquery,
-   jqueryui,
-   bt,
-   io
-) {
-   var $window = $(window);
+define(['jquery', 'jquery-ui', 'business-team', 'socket.io/socket.io'],
+function(jquery, jqueryui, bt, io) {
+
+   // Data
+   ////////////////////////////////////////////////////////////////////////////
+
    var socket = io();
    var states = {
       lobby: {},
@@ -26,13 +20,10 @@ define([
    };
    var state = states.lobby;
 
-   $window.keydown(function(ev) {
-      socket.emit('keypress', {
-         keyCode: ev.keyCode
-      });
-   });
+   // Network Events
+   ////////////////////////////////////////////////////////////////////////////
 
-   socket.on('connected', function(data) {
+   socket.on('connected', function(identifier) {
       console.log('connected');
 
       if (state != states.lobby) {
@@ -40,10 +31,10 @@ define([
          return;
       }
 
-      gIdentifier = data;
+      $(window).trigger('client_connected', [identifier]);
    });
 
-   socket.on('disconnected', function(data) {
+   socket.on('disconnected', function(identifier) {
       console.log('disconnected');
 
       if (state != states.lobby) {
@@ -51,26 +42,42 @@ define([
          return;
       }
 
-      gPlayerList = gPlayerList.filter(function(user) {
-         return user.identifier !== data;
-      });
-
-      bt.updateLobbyList(gPlayerList, gIdentifier);
+      $(window).trigger('client_disconnected', [identifier]);
    });
 
    socket.on('game in progress', function() {
       console.error('cannot join game in progress');
+
+      if (state != states.lobby) {
+         console.error('received game in progress event when not in lobby state');
+         return;
+      }
+
+      $(window).trigger('client_game_in_progress');
    });
 
    socket.on('game ended', function() {
-      window.location.reload();
+      console.log('game ended');
+
+      if (state != states.game) {
+         console.error('received game ended event when not in game state');
+         return;
+      }
+
+      state = state.lobby;
+
+      $(window).trigger('client_game_ended');
    });
 
-   socket.on('lobby list', function(data) {
+   socket.on('lobby list', function(playerList) {
       console.log('lobby list');
 
-      gPlayerList = data;
-      bt.updateLobbyList(gPlayerList, gIdentifier);
+      if (state != states.lobby) {
+         console.error('received lobby list event when not in lobby state');
+         return;
+      }
+
+      $(window).trigger('client_lobby_list', [playerList]);
    });
 
    socket.on('start game', function(data) {
@@ -81,14 +88,9 @@ define([
          return;
       }
 
-      if (!gIdentifier) {
-         console.error('received start game event before identifier');
-      }
-
       state = states.game;
-      bt.setNumberOfPlayers(data.numPlayers);
 
-      $window.trigger('client_start_game');
+      $(window).trigger('client_start_game', [data]);
 
       socket.emit('game loaded');
    });
@@ -101,16 +103,8 @@ define([
          return;
       }
 
-      if (!gIdentifier) {
-         console.error('received start stage event before identifier');
-      }
+      $(window).trigger('client_start_stage', [data]);
 
-      setGameState(data);
-
-      bt.clearPanels();
-      data.panels.forEach(function(panel) {
-         bt.makeNewPanel(panel.header, panel.button, panel.action);
-      });
       socket.emit('stage loaded');
    });
 
@@ -122,11 +116,7 @@ define([
          return;
       }
 
-      if (!gIdentifier) {
-         console.error('received state update event before identifier');
-      }
-
-      setGameState(data);
+      $(window).trigger('client_state_update', [data]);
    });
 
    socket.on('complete stage', function() {
@@ -137,11 +127,7 @@ define([
          return;
       }
 
-      if (!gIdentifier) {
-         console.error('received state update event before identifier');
-      }
-
-      $window.trigger('client_complete_stage');
+      $(window).trigger('client_complete_stage');
    });
 
    socket.on('fail stage', function() {
@@ -152,19 +138,26 @@ define([
          return;
       }
 
-      if (!gIdentifier) {
-         console.error('received state update event before identifier');
-      }
-
       state = states.lobby;
-      $window.trigger('client_fail_stage');
+
+      $(window).trigger('client_fail_stage');
    });
 
    socket.on('delegate task', function(task) {
-      $window.trigger('client_delegate_task', task);
+      console.log('delegate task');
+
+      if (state != states.game) {
+         console.error('received state update event when not in game state');
+         return;
+      }
+
+      $(window).trigger('client_delegate_task', [task]);
    });
 
-   $window.on('lobby_ready', function(ev) {
+   // UI Events
+   ////////////////////////////////////////////////////////////////////////////
+
+   $(window).on('lobby_ready', function(ev) {
       console.log('lobby ready');
 
       if (state != states.lobby) {
@@ -172,15 +165,10 @@ define([
          return;
       }
 
-      if (!gIdentifier) {
-         console.error('fired lobby ready event before identifier');
-         return;
-      }
-
       socket.emit('lobby ready');
    });
 
-   $window.on('lobby_not_ready', function(ev) {
+   $(window).on('lobby_not_ready', function(ev) {
       console.log('lobby not ready');
 
       if (state != states.lobby) {
@@ -188,15 +176,10 @@ define([
          return;
       }
 
-      if (!gIdentifier) {
-         console.error('fired lobby not ready event before identifier');
-         return;
-      }
-
       socket.emit('lobby not ready');
    });
 
-   $window.on('action_taken', function(ev, action) {
+   $(window).on('action_taken', function(ev, action) {
       console.log('action taken');
 
       if (state != states.game) {
@@ -204,15 +187,6 @@ define([
          return;
       }
 
-      if (!gIdentifier) {
-         console.error('fired action taken event before identifier');
-         return;
-      }
-
       socket.emit('action taken', action);
    });
-
-   function setGameState(state) {
-      $window.trigger('client_update_game_state', state);
-   }
 });
