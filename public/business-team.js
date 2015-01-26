@@ -68,14 +68,14 @@ define([
       progressBar(task.expirationDate - now);
    });
 
+   $(window).on('client_update_game_state', function(event, state) {
+      $('#tasks_completed').text(state.numCompletedTasks);
+   });
+
    $('.back_to_lobby').click(function() {
       $('#game_over').hide();
       $('#landing_page').show();
    });
-
-   function moveTeam() {
-      $("#team").animate({left: "+=5%"}, 200);
-   }
 
    function makeNewPanel(header, button, action) {
       $('#panelRow').append(

@@ -35,6 +35,14 @@ p.lead.me {
    font-weight: bold;
 }
 
+#instruction_text {
+   float: left;
+}
+
+#tasks_completed {
+   float: right;
+}
+
 #animation_area {
    height:200px;
    width: 100%;
@@ -47,19 +55,6 @@ p.lead.me {
    margin-top: 0px;
 }
 
-#instruction_area {
-   height: 200px;
-   width: 100%;
-   padding-top: 60px;
-   background-color: #666;
-   color: white;
-   text-align: center;
-}
-
-#instruction_area > h1 {
-   margin-top: 0px;
-}
-
 .progress {
    width: 100%;
    margin-bottom: 0px;
@@ -68,7 +63,7 @@ p.lead.me {
 #button_layout {
    height: 400px;
    width: 100%;
-   background-color: #888;
+   background: rgba(255, 255, 255, 0.85);
 }
 
 .col-md-1 {
