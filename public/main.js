@@ -105,8 +105,7 @@ define([
          console.error('received start stage event before identifier');
       }
 
-      gGameState = data;
-      console.log(data);
+      setGameState(data);
 
       bt.clearPanels();
       data.panels.forEach(function(panel) {
@@ -127,7 +126,7 @@ define([
          console.error('received state update event before identifier');
       }
 
-      gGameState = data;
+      setGameState(data);
    });
 
    socket.on('complete stage', function() {
@@ -212,4 +211,8 @@ define([
 
       socket.emit('action taken', action);
    });
+
+   function setGameState(state) {
+      $window.trigger('client_update_game_state', state);
+   }
 });

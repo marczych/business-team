@@ -69,14 +69,14 @@ define([
       $('#instruction_text').text(task.action);
    });
 
+   $(window).on('client_update_game_state', function(event, state) {
+      $('#tasks_completed').text(state.numCompletedTasks);
+   });
+
    $('.back_to_lobby').click(function() {
       $('#game_over').hide();
       $('#landing_page').show();
    });
-
-   function newTask(task) {
-      $('#instruction_area').append("<div class='alert alert-success' role='alert'>" + task + "</div>");
-   }
 
    function makeNewPanel(header, button, action) {
       $('#panelRow').append(
