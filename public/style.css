@@ -51,6 +51,10 @@ p.lead.me {
    text-align: center;
 }
 
+#total_completed {
+   text-align: center;
+}
+
 #animation_area > h1 {
    margin-top: 0px;
 }

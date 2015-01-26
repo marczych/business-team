@@ -87,7 +87,7 @@ define([
    });
 
    $(window).on('client_update_game_state', function(event, state) {
-      $('#number').text(state.numCompletedTasks);
+      $('.number').text(state.numCompletedTasks);
    });
 
    $('.back_to_lobby').click(function() {
