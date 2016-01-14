@@ -1,10 +1,12 @@
-#!/bin/bash -ex
+#!/bin/bash
+
+set -exuo pipefail
 
 # Fedora 21 install script.
 
-yum update -y
+dnf upgrade -y
 
-yum install -y nodejs npm git
+dnf install -y nodejs npm git
 
 cd /opt/
 git clone https://github.com/marczych/business-team.git
