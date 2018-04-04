@@ -18,4 +18,5 @@ npm install
 cp business-team.service /usr/lib/systemd/system/
 
 systemctl daemon-reload
+systemctl enable business-team
 systemctl start business-team
